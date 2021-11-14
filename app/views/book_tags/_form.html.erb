@@ -1,0 +1,22 @@
+<div class="form">
+  <%= form_for @book_tag do |f| %>
+    <ul>
+      <% @books.each_with_index do |book,index| %>
+        <div class="m-1">
+          <li>
+            <%= check_box_tag 'book_ids[]', book.id %>
+            <label><%= book.title %> <sup class="default-color">*</sup></label>
+          </li>
+        </div>
+      <% end %>
+    </ul>
+
+    <div class="m-1">
+      <label>Tag <sup class="default-color">*</sup></label>
+      <%= f.select :tag_id, options_for_select(@tags.map{|c| [c.name, c.id]}),{prompt: "Select tag"}, class: 'form-control' %>
+    </div>
+
+    <%= f.submit class: 'btn btn-primary mt-2' %>
+    <%= link_to "Back", books_path, class: "btn btn-secondary mt-2" %>
+  <% end %>
+</div>

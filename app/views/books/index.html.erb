@@ -1,0 +1,67 @@
+<div class="container mt-4">
+  <div class="row col-sm-12">
+    <div class="col-sm-7">
+      <% @books.each_with_index do |book,index| %>
+        <div class="row m-2">
+          <div class="col-sm-1">
+            <%= index+1 %>.
+          </div>
+          <div class="col-sm-11">
+            <div class="card p-0">
+              <div class="row">
+                <div class="col-sm-4">
+                  <% if book&.avatar.attached? %>
+                    <%= image_tag(book&.avatar, class: 'card-image', style: 'width: 150px') %>
+                  <% end %>
+                </div>
+                <div class="col-sm-8">
+                  <h3>
+                    <%= book&.title %>
+                  </h3>
+                  <div class="dull-text">
+                    <p class="p-0 m-0"><b>Author: </b><%= book.author.name %></p>
+                    <p class="p-0 m-0"><b>Creation Date: </b><%= book&.created_at.strftime("%d %B %Y") %></p>
+                    <p class="p-0 m-0"><b>Price: </b><%= book&.price %></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-sm-5">
+      <div class="row">
+        <div class="col-sm-6 ml-auto mt-5 admin-btn-border">
+          <%= form_tag search_books_path do %>
+            <div class="m-1">
+              <label>Min Price <sup class="default-color">*</sup></label>
+              <%= select_tag 'min_price', options_for_select(["0", "10", "20", "50", "100"]), {prompt: "select min price", class: 'form-control'} %>
+            </div>
+            <div class="m-1">
+              <label>Max Price <sup class="default-color">*</sup></label>
+              <%= select_tag 'max_price', options_for_select(["200", "300", "400", "500", "1000"]), {prompt: "select min price", class: 'form-control'} %>
+            </div>
+            <select name="tags[]" class="selectpicker" multiple data-live-search="true">
+              <% @tags.each do |tag|%>
+                <option><%=tag.name%></option>
+              <% end %>
+            </select>
+            <div class="row m-1">
+              <%= submit_tag "Search", class: 'btn btn-success' %>
+            </div>
+          <% end %><br><br>
+          <div class="row m-1">
+            <%= link_to "Add New Book", new_book_path, class: 'btn btn-primary' %>
+          </div>
+          <div class="row m-1">
+            <%= link_to "Add New Tag", new_tag_path, class: 'btn btn-primary' %>
+          </div>
+          <div class="row m-1">
+            <%= link_to "Generate Taggings", new_book_tag_path, class: 'btn btn-primary' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,5 @@
+<div class="m-1">
+  <label>Price <sup class="default-color">*</sup></label>
+  <%= select_tag 'price', options_for_select(Book.all.map{|c| [c.price, c.id]}),{prompt: "Select Price"}, class: 'form-control' %>
+</div>
+<%= link_to "Search", search_books_path, class: "btn btn-secondary mt-2" %>

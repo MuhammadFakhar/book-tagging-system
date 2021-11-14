@@ -1,0 +1,46 @@
+<div class="container mt-4">
+  <div class="row col-sm-12">
+    <div class="col-sm-7">
+      <% @books.each_with_index do |book,index| %>
+        <div class="row m-2">
+          <div class="col-sm-1">
+            <%= index+1 %>.
+          </div>
+          <div class="col-sm-11">
+            <div class="card p-0">
+              <div class="row">
+                <div class="col-sm-4">
+                  <% if book.avatar.attached? %>
+                    <%= image_tag(book.avatar, class: 'card-image') %>
+                  <% end %>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="<%= book.id %>" id="flexCheckDefault">
+                </div>
+                <div class="col-sm-8">
+                  <h3>
+                    <%= book.title %>
+                  </h3>
+                  <div class="dull-text">
+                    <p class="p-0 m-0"><b>Author: </b><%= book.author.name %></p>
+                    <p class="p-0 m-0"><b>Creation Date: </b><%= book.created_at.strftime("%d %B %Y") %></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-sm-5">
+      <div class="row">
+        <div class="col-sm-6 ml-auto mt-5 admin-btn-border">
+          <div class="m-1">
+            <label>Tag <sup class="default-color">*</sup></label>
+            <%= f.select :tag_id, options_for_select(Tag.all.map{|c| [c.name, c.id]}),{prompt: "Select Tag"}, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
