@@ -6,5 +6,8 @@ class Book < ApplicationRecord
   has_many :book_tags
   has_many :tags, :through => :book_tags
 
-  validates :name, presence: true, uniqueness: true
+  validates :title, presence: true, uniqueness: true
+
+  scope :custom_filtering, ->(min_price, max_price, tags) { where("price >= ? AND price<= ?", min_price, max_price)
+                            .joins(:tags).where( tags: { id: tags }) }
 end

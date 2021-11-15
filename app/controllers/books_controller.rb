@@ -22,49 +22,13 @@ class BooksController < ApplicationController
   end
 
   def search
-    if params[:min_price].present? && params[:max_price].present? && params[:tags].present?
-      search_by_tag_and_price(params)
-    elsif params[:min_price].present? && params[:max_price].present?
-      search_by_price(params)
-    elsif params[:tags].present?
-      search_by_tags(params)
-    else
-      @books = Book.all
-    end
+    min_price = params[:min_price].present? ? params[:min_price] : 0
+    max_price = params[:max_price].present? ? params[:max_price] : 1000
+    tags = params[:tags].present? ? params[:tags] : Tag.all.pluck(:id)
+
+    @books = Book.custom_filtering(min_price, max_price, tags)
 
     render 'index'
-  end
-
-  def search_by_tag_and_price(params)
-    tag_filter = []
-    @books = []
-
-    price_filter = Book.where("price >= ? AND price<= ?", params[:min_price], params[:max_price])
-
-    params[:tags].each do |tag|
-      book_tag_id = Tag.find_by(name: tag).id
-      book_tags = BookTag.where(tag_id: book_tag_id)
-      book_tags.each do |b_tag|
-        @books << b_tag.book
-      end
-    end
-    @books = price_filter | tag_filter
-  end
-
-  def search_by_price(params)
-    @books = Book.where("price >= ? AND price<= ?", params[:min_price], params[:max_price])
-  end
-
-  def search_by_tags(params)
-    books = []
-    params[:tags].each do |tag|
-      book_tag_id = Tag.find_by(name: tag).id
-      book_tags = BookTag.where(tag_id: book_tag_id)
-      book_tags.each do |b_tag|
-        books << b_tag.book
-      end
-    end
-    @books = books.uniq
   end
 
   private

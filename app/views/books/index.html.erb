@@ -44,7 +44,7 @@
             </div>
             <select name="tags[]" class="selectpicker" multiple data-live-search="true">
               <% @tags.each do |tag|%>
-                <option><%=tag.name%></option>
+                <option value=<%=tag.id%>><%=tag.name%></option>
               <% end %>
             </select>
             <div class="row m-1">
